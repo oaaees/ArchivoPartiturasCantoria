@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Partituras - Cantoria</title>
+    <meta name="description" content="Buscador de partituras de la Cantoria. Encuentra obras por nombre o autor.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-container">
+            <img src="LogoCantoria.png" alt="Logo Cantoria" class="logo">
+        </div>
+        <h1>Archivo de Partituras</h1>
+    </header>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre o autor..." aria-label="Buscar partituras">
+            <button id="showAllBtn" class="btn-primary">Ver Todo</button>
+        </div>
+
+        <div id="resultsContainer" class="results-grid">
+            <!-- Results will be injected here -->
+            <div class="loading-message">Cargando partituras...</div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Cantoria. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
