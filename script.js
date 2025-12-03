@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const csvUrl = 'Archivo Partituras.csv';
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRz1qYzG_gHWhc9JoCIFdJhhz7GS_R9MbuY5ce-VZXDLVRJ5OZaUcdAh0YlpZebHsdz3kFy8Q11xNJU/pub?output=csv';
     let scoresData = [];
     let fuse;
+    let isShowingAll = false;
 
     const searchInput = document.getElementById('searchInput');
     const showAllBtn = document.getElementById('showAllBtn');
@@ -36,6 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Listeners
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
+
+        // Reset "Show All" state if user starts typing
+        if (isShowingAll) {
+            isShowingAll = false;
+            showAllBtn.textContent = 'Ver Todo';
+        }
+
         if (query.length > 0) {
             const results = fuse.search(query);
             const formattedResults = results.map(result => result.item);
@@ -47,7 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showAllBtn.addEventListener('click', () => {
         searchInput.value = '';
-        renderResults(scoresData);
+
+        if (!isShowingAll) {
+            renderResults(scoresData);
+            showAllBtn.textContent = 'Esconder';
+            isShowingAll = true;
+        } else {
+            resultsContainer.innerHTML = '';
+            showAllBtn.textContent = 'Ver Todo';
+            isShowingAll = false;
+        }
     });
 
     function renderResults(data) {
