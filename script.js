@@ -12,12 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         download: true,
         header: true,
         skipEmptyLines: true,
-        complete: function(results) {
+        complete: function (results) {
             scoresData = results.data;
             initializeSearch();
-            renderResults(scoresData); // Show all initially or maybe just a few? Let's show all for now as per "Show Full List" implication
+            // Don't render results initially as per user request
+            // renderResults(scoresData); 
         },
-        error: function(error) {
+        error: function (error) {
             console.error('Error parsing CSV:', error);
             resultsContainer.innerHTML = '<div class="no-results">Error al cargar las partituras. Por favor, intente más tarde.</div>';
         }
@@ -25,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initializeSearch() {
         const options = {
-            keys: ['Name of Piece', 'Author'],
-            threshold: 0.3, // Fuzzy search threshold (0.0 = perfect match, 1.0 = match anything)
+            keys: ['Name of Piece', 'Author', 'ID'], // Added ID to search keys if they want to search by ID too, seems useful
+            threshold: 0.3,
             ignoreLocation: true
         };
         fuse = new Fuse(scoresData, options);
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formattedResults = results.map(result => result.item);
             renderResults(formattedResults);
         } else {
-            renderResults(scoresData);
+            resultsContainer.innerHTML = ''; // Clear results if search is empty
         }
     });
 
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'score-card';
 
+            const id = score['ID'] || '#';
             const name = score['Name of Piece'] || 'Nombre No Disponible';
             const author = score['Author'] || 'Autor No Disponible';
             const copies = score['Number of Copies'] ? `${score['Number of Copies']} copias` : 'Copias No Disponibles';
@@ -69,7 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div>
-                    <h3 class="score-title">${name}</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                        <h3 class="score-title" style="margin-bottom: 0;">${name}</h3>
+                        <span style="background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; color: #666;">#${id}</span>
+                    </div>
                     <p class="score-author">${author}</p>
                     <p class="score-meta">${copies}</p>
                 </div>
